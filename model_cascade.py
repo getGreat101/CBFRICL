@@ -27,20 +27,12 @@ class info_nce_loss(nn.Module):
     def __init__(self):
         super(info_nce_loss, self).__init__()
     def forward(self, user_embedding, pos_item_embedding, neg_item_embedding, temperature=0.2):
-        # 正样本相似度
         pos_similarity = F.cosine_similarity(user_embedding, pos_item_embedding)
-        # 负样本相似度
         neg_similarity = F.cosine_similarity(user_embedding, neg_item_embedding)
-
-        # 正负样本拼接
         logits = torch.cat([pos_similarity.unsqueeze(1), neg_similarity.unsqueeze(1)], dim=1)
-        
-        # 标注正样本位置
         labels = torch.zeros(logits.shape[0], dtype=torch.long)
-        
         logits = logits.to('cuda')
         labels = labels.to('cuda')
-        # 计算InfoNCE损失
         loss = F.cross_entropy(logits / temperature, labels)
 
         return loss
@@ -136,11 +128,9 @@ class CBFRICL(nn.Module):
             user_feature = user_all_embedding[users.view(-1, 1)].expand(-1, items.shape[1], -1)
             item_feature = item_all_embedding[items]
             pos_item_embedding, neg_item_embedding = torch.unbind(item_feature, dim=1)
-            # user_feature, item_feature = self.message_dropout(user_feature), self.message_dropout(item_feature)
             cl_user_embedding = user_all_embedding[users.view(-1, 1)].squeeze(1)
             cl_loss = self.info_nce_loss(cl_user_embedding, pos_item_embedding, neg_item_embedding, temperature=0.1)
             scores = torch.sum(user_feature * item_feature, dim=2)
-#             total_loss += self.bpr_loss(scores[:, 0], scores[:, 1]) * weights[behavior]
             total_loss += self.bpr_loss(scores[:, 0], scores[:, 1]) * weights[behavior]
             total_loss += cl_loss
         total_loss = total_loss + self.reg_weight * self.emb_loss(self.user_embedding.weight, self.item_embedding.weight)
