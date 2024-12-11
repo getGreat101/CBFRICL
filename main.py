@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--data_name', type=str, default='tmall_cold', help='')
     parser.add_argument('--behaviors', help='', action='append')
-    parser.add_argument('--if_load_model', type=bool, default=False, help='')#控制是否加载模型参数
+    parser.add_argument('--if_load_model', type=bool, default=False, help='')
 
     parser.add_argument('--topk', type=list, default=[10, 20, 50, 80], help='')
     parser.add_argument('--metrics', type=list, default=['hit', 'ndcg'], help='')
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     parser.add_argument('--test_batch_size', type=int, default=3072, help='')
     parser.add_argument('--min_epoch', type=str, default=5, help='')
     parser.add_argument('--epochs', type=str, default=200, help='')
-    parser.add_argument('--model_path', type=str, default='./check_point', help='')#保存模型地址
-    parser.add_argument('--check_point', type=str, default='', help='')#加载模型地址
+    parser.add_argument('--model_path', type=str, default='./check_point', help='')
+    parser.add_argument('--check_point', type=str, default='', help='')
     parser.add_argument('--model_name', type=str, default='', help='')
     parser.add_argument('--device', type=str, default='cuda', help='')
 
