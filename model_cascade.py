@@ -58,7 +58,7 @@ class CBFRICL(nn.Module):
         self.Graph_encoder = nn.ModuleDict({
             behavior: GraphEncoder(self.layers[index], self.embedding_size, self.node_dropout) for index, behavior in enumerate(self.behaviors)
         })
-        #对比学习函数
+        
         self.info_nce_loss = info_nce_loss()
 
 
