@@ -113,12 +113,7 @@ class CBFRICL(nn.Module):
 
         all_embeddings = self.gcn_propagate()
         total_loss = 0
-        weights = {
-        'click': 0.2,
-        'collect' : 0.25,
-        'cart': 0.25,
-        'buy': 0.3
-        }
+        
         for index, behavior in enumerate(self.behaviors):
             data = batch_data[:, index]
             users = data[:, 0].long()
